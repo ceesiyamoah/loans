@@ -1,14 +1,46 @@
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Router, Switch, Route } from 'react-router-dom';
 import './App.css';
-import Header from './components/Header';
-import SearchBar from './components/SearchBar';
+import PrivateRoute from './components/PrivateRoute';
+import history from './history';
+import Auth from './pages/Auth';
+import Dashboard from './pages/Dashboard';
+import Loans from './pages/Loans';
+import Payments from './pages/Payments';
+import Staff from './pages/Staff';
+import { authenticate } from './store/actions/authActions';
 
-function App() {
+function App({ authenticate }) {
+	useEffect(() => {
+		const userData = JSON.parse(localStorage.getItem('userData'));
+		if (
+			!!userData.token &&
+			!!userData.userId &&
+			new Date().getTime() < userData.expiresAt
+		) {
+			authenticate(userData.token, userData.userId, userData.expiresAt);
+			history.push('/dashboard');
+		}
+	}, [authenticate]);
 	return (
 		<>
-			<Header />
-			<SearchBar />
+			<Router history={history}>
+				<Switch>
+					<PrivateRoute component={Dashboard} exact path='/dashboard' />
+					<PrivateRoute component={Staff} path='/staff' />
+					<PrivateRoute component={Loans} path='/loans' />
+					<PrivateRoute component={Payments} path='/payments' />
+					<Route component={Auth} exact path='/' />
+				</Switch>
+			</Router>
 		</>
 	);
 }
+const mapStateToProps = (state) => ({});
 
-export default App;
+const mapDispatchToProps = {
+	authenticate,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
