@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Router, Switch, Route } from 'react-router-dom';
 import './App.css';
+import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
 import history from './history';
 import Auth from './pages/Auth';
@@ -26,12 +27,13 @@ function App({ authenticate }) {
 	return (
 		<>
 			<Router history={history}>
+				<Route component={Auth} exact path='/' />
+				<Header />
 				<Switch>
 					<PrivateRoute component={Dashboard} exact path='/dashboard' />
 					<PrivateRoute component={Staff} path='/staff' />
 					<PrivateRoute component={Loans} path='/loans' />
 					<PrivateRoute component={Payments} path='/payments' />
-					<Route component={Auth} exact path='/' />
 				</Switch>
 			</Router>
 		</>

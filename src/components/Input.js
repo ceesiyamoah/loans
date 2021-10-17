@@ -1,8 +1,8 @@
 import React from 'react';
-const Input = ({ label, type, id, value, onChange, rest }) => {
+const Input = ({ label, type = 'text', id, value, onChange, rest }) => {
 	return (
 		<div className='flex flex-col w-full'>
-			<label htmlFor='password'>{label}</label>
+			<label htmlFor={id}>{label}</label>
 			<input
 				type={type}
 				id={id}

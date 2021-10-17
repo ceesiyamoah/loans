@@ -1,7 +1,15 @@
 import React from 'react';
-const Card = ({ children }) => {
+import history from '../history';
+const Card = ({ children, styles, route }) => {
 	return (
-		<div className='bg-white shadow rounded-md w-3/12 p-10'>{children}</div>
+		<div
+			className={`bg-white shadow rounded-md w-3/12 p-10 ${styles}`}
+			onClick={() => {
+				history.push(route);
+			}}
+		>
+			{children}
+		</div>
 	);
 };
 
